@@ -14,7 +14,19 @@ const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [notes, setNotes] = useState([]);
+  const [firstName, setFirstName] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth.currentUser) {
+      // Extract the first name from the email
+      const email = auth.currentUser.email;
+      const extractedFirstName = email.split("@")[0];
+      setFirstName(
+        extractedFirstName.charAt(0).toUpperCase() + extractedFirstName.slice(1)
+      );
+    }
+  }, []);
 
   // Fetch notes for the currently authenticated user
   const fetchNotes = async () => {
@@ -32,23 +44,13 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    // Check if the user is authenticated
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (!user) {
-        navigate("/login"); // Redirect to login if not authenticated
-      } else {
-        fetchNotes(); // Fetch notes if user is authenticated
-      }
-    });
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [navigate]);
+    fetchNotes();
+  }, [auth.currentUser]);
 
   // Handle adding a new note
   const handleAddNote = async (e) => {
     e.preventDefault();
-    if (title && body && auth.currentUser) {
+    if (title && body) {
       try {
         await addDoc(collection(firestore, "notes"), {
           title,
@@ -85,7 +87,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-to-r from-indigo-500 to-purple-500 p-4">
       <div className="max-w-3xl mx-auto bg-white p-8 shadow-lg rounded-lg">
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-6">
-          Dashboard
+          Welcome {firstName}
         </h1>
         <form onSubmit={handleAddNote} className="flex flex-col gap-4 mb-8">
           <input

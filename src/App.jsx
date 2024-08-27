@@ -5,6 +5,8 @@ import LoginForm from "./components/LoginForm";
 import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
+// import PhoneAuth from "./components/PhoneAuth";
+// import VerifyCode from "./components/VerifyCode";
 
 const App = () => {
   return (
@@ -13,6 +15,8 @@ const App = () => {
         <Route path="/" element={<SignUpForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignUpForm />} />
+        {/* <Route path="/phone-auth" element={<PhoneAuth />} />
+        <Route path="/verify-code" element={<VerifyCode />} /> */}
         <Route
           path="/dashboard"
           element={
