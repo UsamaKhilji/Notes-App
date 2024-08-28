@@ -13,7 +13,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<SignUpForm />} />
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<LoginForm />} />s
         <Route path="/signup" element={<SignUpForm />} />
         {/* <Route path="/phone-auth" element={<PhoneAuth />} />
         <Route path="/verify-code" element={<VerifyCode />} /> */}

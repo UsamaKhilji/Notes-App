@@ -10,12 +10,17 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  // If loading, show a loading state
+
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
+        <div className="text-white text-2xl font-bold animate-pulse">
+          Loading...
+        </div>
+      </div>
+    );
   }
 
-  // If user is authenticated, redirect to dashboard
   if (user) {
     return <Navigate to="/dashboard" />;
   }
@@ -36,11 +41,16 @@ const SignUpForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
-      <div className="max-w-md w-full p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">Sign Up</h2>
-        <form onSubmit={handleSignUp}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-600">
+      <div className="max-w-md w-full p-8 bg-white shadow-2xl rounded-2xl transform hover:scale-105 transition-transform duration-500">
+        <h2 className="text-4xl font-bold text-gray-900 mb-6 text-center animate-fade-in">
+          Sign Up
+        </h2>
+        <form onSubmit={handleSignUp} className="space-y-6">
+          <div className="relative">
+            <label
+              htmlFor="email"
+              className="absolute -top-4 left-2 text-purple-500 text-sm transform -translate-y-4 opacity-0 transition-all duration-300 focus-within:opacity-100 focus-within:translate-y-0"
+            >
               Email
             </label>
             <input
@@ -48,12 +58,15 @@ const SignUpForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
               required
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-600">
+          <div className="relative">
+            <label
+              htmlFor="password"
+              className="absolute -top-4 left-2 text-purple-500 text-sm transform -translate-y-4 opacity-0 transition-all duration-300 focus-within:opacity-100 focus-within:translate-y-0"
+            >
               Password
             </label>
             <input
@@ -61,12 +74,15 @@ const SignUpForm = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
               required
             />
           </div>
-          <div className="mb-6">
-            <label htmlFor="confirmPassword" className="block text-gray-600">
+          <div className="relative">
+            <label
+              htmlFor="confirmPassword"
+              className="absolute -top-4 left-2 text-purple-500 text-sm transform -translate-y-4 opacity-0 transition-all duration-300 focus-within:opacity-100 focus-within:translate-y-0"
+            >
               Confirm Password
             </label>
             <input
@@ -74,18 +90,18 @@ const SignUpForm = () => {
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300"
+            className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300 transform hover:scale-105 animate-bounce-slow"
           >
             Sign Up
           </button>
         </form>
-        <p className="mt-4 text-center text-gray-600">
+        <p className="mt-6 text-center text-gray-600">
           Already have an account?{" "}
           <a href="/login" className="text-purple-600 hover:underline">
             Login

@@ -5,16 +5,19 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 import { firestore, auth } from "../firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { FaTrashAlt, FaEdit } from "react-icons/fa"; // Importing FontAwesome icons
 
 const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [notes, setNotes] = useState([]);
   const [firstName, setFirstName] = useState("");
+  const [editNoteId, setEditNoteId] = useState(null); // Track the note being edited
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,21 +50,29 @@ const Dashboard = () => {
     fetchNotes();
   }, [auth.currentUser]);
 
-  // Handle adding a new note
-  const handleAddNote = async (e) => {
+  // Handle adding or updating a note
+  const handleSaveNote = async (e) => {
     e.preventDefault();
     if (title && body) {
       try {
-        await addDoc(collection(firestore, "notes"), {
-          title,
-          body,
-          userId: auth.currentUser.uid, // Associate note with the logged-in user
-        });
+        if (editNoteId) {
+          // Update the existing note
+          const noteRef = doc(firestore, "notes", editNoteId);
+          await updateDoc(noteRef, { title, body });
+          setEditNoteId(null); // Reset the edit note ID after updating
+        } else {
+          // Add a new note
+          await addDoc(collection(firestore, "notes"), {
+            title,
+            body,
+            userId: auth.currentUser.uid, // Associate note with the logged-in user
+          });
+        }
         setTitle("");
         setBody("");
         fetchNotes();
       } catch (error) {
-        console.error("Error adding note:", error);
+        console.error("Error saving note:", error);
       }
     }
   };
@@ -83,13 +94,20 @@ const Dashboard = () => {
     navigate("/login");
   };
 
+  // Handle editing a note
+  const handleEditNote = (note) => {
+    setTitle(note.title);
+    setBody(note.body);
+    setEditNoteId(note.id); // Set the note ID being edited
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-indigo-500 to-purple-500 p-4">
       <div className="max-w-3xl mx-auto bg-white p-8 shadow-lg rounded-lg">
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-6">
           Welcome {firstName}
         </h1>
-        <form onSubmit={handleAddNote} className="flex flex-col gap-4 mb-8">
+        <form onSubmit={handleSaveNote} className="flex flex-col gap-4 mb-8">
           <input
             type="text"
             value={title}
@@ -107,7 +125,7 @@ const Dashboard = () => {
             type="submit"
             className="p-4 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-300"
           >
-            Add Note
+            {editNoteId ? "Update Note" : "Add Note"}
           </button>
         </form>
         <div className="space-y-4">
@@ -118,12 +136,16 @@ const Dashboard = () => {
             >
               <h2 className="text-2xl font-bold mb-2">{note.title}</h2>
               <p className="mb-4">{note.body}</p>
-              <button
-                onClick={() => handleDeleteNote(note.id)}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300"
-              >
-                Delete
-              </button>
+              <div className="flex justify-end space-x-4">
+                <FaEdit
+                  onClick={() => handleEditNote(note)}
+                  className="cursor-pointer text-2xl text-blue-300 hover:text-blue-500 transition duration-300"
+                />
+                <FaTrashAlt
+                  onClick={() => handleDeleteNote(note.id)}
+                  className="cursor-pointer text-2xl text-red-300 hover:text-red-500 transition duration-300"
+                />
+              </div>
             </div>
           ))}
         </div>

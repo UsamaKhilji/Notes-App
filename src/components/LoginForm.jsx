@@ -12,7 +12,13 @@ const LoginForm = () => {
 
   // If loading, show a loading state
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-500">
+        <div className="text-white text-2xl font-bold animate-pulse">
+          Loading...
+        </div>
+      </div>
+    );
   }
 
   // If user is authenticated, redirect to dashboard
@@ -33,11 +39,16 @@ const LoginForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-500">
-      <div className="max-w-md w-full p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">Login</h2>
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-600">
+      <div className="max-w-md w-full p-8 bg-white shadow-2xl rounded-2xl transform hover:scale-105 transition-transform duration-500">
+        <h2 className="text-4xl font-bold text-gray-900 mb-6 text-center animate-fade-in">
+          Login
+        </h2>
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div className="relative">
+            <label
+              htmlFor="email"
+              className="absolute -top-4 left-2 text-blue-500 text-sm transform -translate-y-4 opacity-0 transition-all duration-300 focus-within:opacity-100 focus-within:translate-y-0"
+            >
               Email
             </label>
             <input
@@ -45,12 +56,15 @@ const LoginForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
               required
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-600">
+          <div className="relative">
+            <label
+              htmlFor="password"
+              className="absolute -top-4 left-2 text-blue-500 text-sm transform -translate-y-4 opacity-0 transition-all duration-300 focus-within:opacity-100 focus-within:translate-y-0"
+            >
               Password
             </label>
             <input
@@ -58,22 +72,22 @@ const LoginForm = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 animate-bounce-slow"
           >
             Login
           </button>
         </form>
-        <div className="mt-4 text-center">
+        <div className="mt-6 text-center">
           <Link to="/signup" className="text-blue-500 hover:underline">
             Sign Up
           </Link>
-          <span className="mx-2">|</span>
+          <span className="mx-2 text-gray-500">|</span>
           <Link to="/forgot-password" className="text-blue-500 hover:underline">
             Forgot Password?
           </Link>
